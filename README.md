@@ -116,11 +116,14 @@ https://github.com/berdav/CVE-2021-4034
 2. Basic Enumeration of index.html and found domain name engineer.htb via email address scattered in the page. (e.g info@engineer.htb, contact@engineer.htb) Edit /etc/hosts to add the domain name for the target ip.
 
 *first view of index.html:
+
 <img src=img/index.png>
 *email address ending with @engineer.htb
+
 <img src=img/email.png>
 
 3. There's no interesting port or web content. Use gobuster to enumerate for subdomains: (using subdomains wordlist provided by seclists)
+
             $gobuster vhost -u engineer.htb -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt 
             ===============================================================
             Gobuster v3.1.0
@@ -142,6 +145,7 @@ https://github.com/berdav/CVE-2021-4034
             ===============================================================
 
 4. first view reveals that the site hosts an online engineer's portal
+
 <img src=img/webportal.png>
 
 5. sql injection auth bypass in online engineer's portal v1.0
