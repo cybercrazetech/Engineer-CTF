@@ -80,4 +80,55 @@ https://github.com/berdav/CVE-2021-4034
 
 ## Writeup
 
-[Describe the steps to completing the box. Show all specific commands necessary so that someone could solve the box by copying and pasting from this writeup]
+1. Nmap Scan
+            $nmap -sCV 192.168.0.186
+            Starting Nmap 7.91 ( https://nmap.org ) at 2022-04-05 14:29 +08
+            Nmap scan report for engineer.htb (192.168.0.186)
+            Host is up (0.027s latency).
+            Not shown: 997 closed ports
+            PORT     STATE SERVICE VERSION
+            22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.4 (Ubuntu Linux; protocol 2.0)
+            | ssh-hostkey: 
+            |   3072 e7:67:ab:72:53:be:d6:f3:7b:3d:c0:48:7f:31:34:fa (RSA)
+            |   256 21:93:3c:26:89:14:9f:4a:7c:8c:bf:a1:b5:f6:5d:b3 (ECDSA)
+            |_  256 d1:ed:71:b7:69:ef:64:12:e4:5a:99:cb:41:30:ae:f0 (ED25519)
+            80/tcp   open  http    Apache httpd 2.4.41 ((Ubuntu))
+            |_http-server-header: Apache/2.4.41 (Ubuntu)
+            |_http-title: Onix Digital Marketing HTML5 Template
+            3306/tcp open  mysql   MySQL 8.0.28-0ubuntu0.20.04.3
+            | mysql-info: 
+            |   Protocol: 10
+            |   Version: 8.0.28-0ubuntu0.20.04.3
+            |   Thread ID: 11
+            |   Capabilities flags: 65535
+            |   Some Capabilities: LongColumnFlag, SwitchToSSLAfterHandshake, Speaks41ProtocolOld, SupportsTransactions, IgnoreSigpipes, DontAllowDatabaseTableColumn, InteractiveClient, SupportsLoadDataLocal, Support41Auth, LongPassword, SupportsCompression, ConnectWithDatabase, IgnoreSpaceBeforeParenthesis, ODBCClient, Speaks41ProtocolNew, FoundRows, SupportsMultipleResults, SupportsAuthPlugins, SupportsMultipleStatments
+            |   Status: Autocommit
+            |   Salt: 3n!U1~"\x02\x08R:     ,fO\x11w\x05fs
+            |_  Auth Plugin Name: caching_sha2_password
+            | ssl-cert: Subject: commonName=MySQL_Server_8.0.28_Auto_Generated_Server_Certificate
+            | Not valid before: 2022-04-03T08:32:53
+            |_Not valid after:  2032-03-31T08:32:53
+            Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+            Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+            Nmap done: 1 IP address (1 host up) scanned in 13.45 seconds
+
+$gobuster vhost -u engineer.htb -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt 
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:          http://engineer.htb
+[+] Method:       GET
+[+] Threads:      10
+[+] Wordlist:     /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt
+[+] User Agent:   gobuster/3.1.0
+[+] Timeout:      10s
+===============================================================
+2022/04/05 14:33:56 Starting gobuster in VHOST enumeration mode
+===============================================================
+Found: webportal.engineer.htb (Status: 200) [Size: 9749]
+                                                        
+===============================================================
+2022/04/05 14:34:01 Finished
+===============================================================
