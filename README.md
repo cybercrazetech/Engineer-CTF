@@ -33,36 +33,37 @@ Passwords:
 3. There's stored password in the binary "mysql-into-cybercraze-group", but it is made unreadable and hence using strings or downloading for local inspection will fail.
 4. source code for mysql-into-cybercraze-group
 
-                #include <stdio.h>
-                #include <string.h>
-                #include <stdlib.h>
-                int main(void)
+            #include <stdio.h>
+            #include <string.h>
+            #include <stdlib.h>
+
+            int main(void)
+            {
+                char buff[15];
+                int pass = 0;
+
+                printf("\n Enter the password : \n");
+                gets(buff);
+
+                if(strcmp(buff, "nocrackplzno!"))
                 {
-                    char buff[15];
-                    int pass = 0;
-
-                    printf("\n Enter the password : \n");
-                    gets(buff);
-
-                    if(strcmp(buff, "nocrackplzno!"))
-                    {
-                        printf ("\n Wrong Password \n");
-                    }
-                    else
-                    {
-                        printf ("\n Correct Password \n");
-                        pass = 1;
-                    }
-
-                    if(pass)
-                    {
-                       /* including mysql to cybercraze group */
-                        printf ("\n Including user mysql to cybercraze group \n");
-                        system ("echo 'nocrackpleaseno!' | sudo -S -k usermod -aG cybercraze mysql");
-                    }
-
-                    return 0;
+                    printf ("\n Wrong Password \n");
                 }
+                else
+                {
+                    printf ("\n Correct Password \n");
+                    pass = 1;
+                }
+
+                if(pass)
+                {
+                   /* including mysql to cybercraze group */
+                    printf ("\n Including user mysql to cybercraze group \n");
+                    system ("echo 'nocrackpleaseno!' | sudo -S -k usermod -aG cybercraze mysql");
+                }
+
+                return 0;
+            }
   
 6. refer to:
 https://www.exploit-db.com/exploits/50452
