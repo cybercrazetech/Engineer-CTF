@@ -29,8 +29,8 @@ Passwords:
 ### Other
 
 1. The online engineer portal is built using the original source code version 1.0. There's no deliberate manipulation of the source code to allow the further exploit done.
-2. There's stored password in the binary "mysql-into-cybercraze-group", but it is made unreadable and hence using strings or downloading for local inspection will fail.
-3. source code for mysql-into-cybercraze-group
+2. There's stored password in the binary "www-data_into_cybercraze_group", but it is made unreadable and hence using strings or downloading for local inspection will fail.
+3. source code for www-data_into_cybercraze_group
 
             #include <stdio.h>
             #include <string.h>
