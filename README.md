@@ -65,8 +65,8 @@ Passwords:
             return 0;
             }
 *notice the vulnerable function gets() to read password is used, which is vulnerable to buffer overflow
-
-6. exploits refer to:
+6. vulnerable /usr/bin/pkexec is moved to /opt/pkexec, where /opt is only readable and executable by user cybercraze
+7. exploits refer to:
 
 https://www.exploit-db.com/exploits/50452
 https://www.idappcom.co.uk/post/engineers-online-portal-1-0-remote-code-execution
