@@ -64,7 +64,8 @@ Passwords:
 
             return 0;
             }
-*notice the vulnerable function gets() to read password is used, which is vulnerable to buffer overflow*
+*notice the vulnerable function gets() to read password is used, which is vulnerable to buffer overflow
+
 6. exploits refer to:
 
 https://www.exploit-db.com/exploits/50452
