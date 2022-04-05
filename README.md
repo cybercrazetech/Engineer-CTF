@@ -33,9 +33,10 @@ Passwords:
 3. There's stored password in the binary "mysql-into-cybercraze-group", but it is made unreadable and hence using strings or downloading for local inspection will fail.
 4. source code for mysql-into-cybercraze-group
 
-  \#include <stdio.h>
-  \#include <string.h>
-  \#include <stdlib.h>
+  start
+  #include <stdio.h>
+  #include <string.h>
+  #include <stdlib.h>
 
   int main(void)
   {
@@ -64,6 +65,7 @@ Passwords:
 
       return 0;
   }
+  
 6. refer to:
 https://www.exploit-db.com/exploits/50452
 
