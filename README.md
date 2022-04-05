@@ -39,34 +39,35 @@ Passwords:
 
             int main(void)
             {
-                char buff[15];
-                int pass = 0;
+            char buff[15];
+            int pass = 0;
 
-                printf("\n Enter the password : \n");
-                gets(buff);
+            printf("\n Enter the password : \n");
+            gets(buff);
 
-                if(strcmp(buff, "nocrackplzno!"))
-                {
-                    printf ("\n Wrong Password \n");
-                }
-                else
-                {
-                    printf ("\n Correct Password \n");
-                    pass = 1;
-                }
-
-                if(pass)
-                {
-                   /* including mysql to cybercraze group */
-                    printf ("\n Including user mysql to cybercraze group \n");
-                    system ("echo 'nocrackpleaseno!' | sudo -S -k usermod -aG cybercraze mysql");
-                }
-
-                return 0;
+            if(strcmp(buff, "nocrackplzno!"))
+            {
+            printf ("\n Wrong Password \n");
             }
-  
-6. refer to:
+            else
+            {
+            printf ("\n Correct Password \n");
+            pass = 1;
+            }
+
+            if(pass)
+            {
+            /* including mysql to cybercraze group */
+            printf ("\n Including user mysql to cybercraze group \n");
+            system ("echo 'nocrackpleaseno!' | sudo -S -k usermod -aG cybercraze mysql");
+            }
+
+            return 0;
+            }
+*notice the vulnerable function gets() to read password is used, which is vulnerable to buffer overflow
+6. exploits refer to:
 https://www.exploit-db.com/exploits/50452
+https://www.idappcom.co.uk/post/engineers-online-portal-1-0-remote-code-execution
 
 
 ## Writeup
