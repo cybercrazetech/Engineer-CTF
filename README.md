@@ -64,7 +64,7 @@ Passwords:
 
             return 0;
             }
-*notice the vulnerable function gets() to read password is used, which is vulnerable to buffer overflow
+#notice the vulnerable function gets() to read password is used, which is vulnerable to buffer overflow
 6. vulnerable /usr/bin/pkexec is moved to /opt/pkexec, where /opt is only readable and executable by user cybercraze
 7. exploits refer to:
 
