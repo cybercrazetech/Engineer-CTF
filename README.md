@@ -29,7 +29,7 @@ Passwords:
 ### Other
 
 1. The online engineer portal is built using the original source code version 1.0. There's no deliberate manipulation of the source code to allow the further exploit done.
-2. There's two ways to gain foothold, but the first way is the intended one (as the mysql user) while the second unintended way (as www-data) is unable to escalate to root. This is because binary "mysql-into-cybercraze-group" only works to include mysql user into cybercraze group, which is intended for further exploitation.
+2. There's two ways to gain foothold, but the first way is the intended one (as the mysql user) while the second unintended way (as www-data) is unable to escalate to root. This is because the vulnerable binary "mysql-into-cybercraze-group" only works to include mysql user into cybercraze group, which is intended for further exploitation.
 3. There's stored password in the binary "mysql-into-cybercraze-group", but it is made unreadable and hence using strings or downloading for local inspection will fail.
 4. source code for mysql-into-cybercraze-group
 
