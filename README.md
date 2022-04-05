@@ -2,9 +2,14 @@
 
 ## Introduction
 
-[Include why you made this box, what skills and vulnerabilities you wanted to highlight, etc]
+This is to introduce the multiple vulnerabilities in Engineers Online Portal 1.0 that could be chained together to reveal serious information, or even rce. Next, this box aims to tell why allowing mysql connection to remote host isn't a good idea. Finally, it takes a little buffer overflow skills to exploit a manually coded binary, and some basic knowledge of how CVE-2021-4034 works to escalate to root.
 
 ## Info for HTB
+
+| hash | content |
+| ---- | ------- |
+| user.txt | 7d58250d6dec957ab2b8ded3fd925e85 |
+| root.txt | 89d975f8ac623a6fdb0246bc01eefbf2 |
 
 ### Access
 
@@ -12,36 +17,18 @@ Passwords:
 
 | User  | Password                            |
 | ----- | ----------------------------------- |
-| user1 | [pass phrase, not too hard to type] |
-| user2 | [pass phrase, not too hard to type] |
-| root  | [pass phrase, not too hard to type] |
-
-### Key Processes
-
-[Describe processes that are running to provide basic services on the box, such as webserver, ftp, etc. For any custom binaries, include source code (in a separate file unless very short). Also include if any of the services or programs are installed intentionally vulnerable versions.].
-
-### Automation / Crons
-
-[Describe any automation on the box:
-
-- What does it do?
-- Why? (necessary for exploit step, clean up, etc)
-- How does it do it? Provide source code (anything longer than a few lines in separate attachment)
-- How does it run?
-
-]
-
-### Firewall Rules
-
-[Describe any non-default firewall rules here]
-
-### Docker
-
-[Describe how docker is used if at all. Attach Dockerfiles]
+| root | nocrackpleaseno! |
+| cybercraze | nocrackpleaseno! |
+| root(mysql) | youshallnotcrackthis |
+| admin(engineer-portal admin) | youshallnotcrackthis |
+| ralph(engineer-portal user) | ralph |
+| tom(engineer-portal user) | tom |
+| jez(engineer-portal user) | jez |
+| andres(engineer-portal user) | andres |
 
 ### Other
 
-[Include any other design decisions you made that the HTB staff should know about]
+1. The online engineer portal is built using the original source code version 1.0. There's no deliberate manipulation of the source code to allow the further exploit done.
 
 ## Writeup
 
