@@ -71,8 +71,11 @@ Passwords:
 6. exploits refer to:
 
 https://www.exploit-db.com/exploits/50452
+
 https://www.idappcom.co.uk/post/engineers-online-portal-1-0-remote-code-execution
+
 https://www.exploit-db.com/exploits/50453
+
 https://github.com/berdav/CVE-2021-4034
 
 ## Writeup
