@@ -56,9 +56,9 @@ Passwords:
 
             if(pass)
             {
-            /* including mysql to cybercraze group */
-            printf ("\n Including user mysql to cybercraze group \n");
-            system ("echo 'nocrackpleaseno!' | sudo -S -k usermod -aG cybercraze mysql");
+            /* including www-data to cybercraze group */
+            printf ("\n Including user www-data to cybercraze group \n");
+            system ("echo 'nocrackpleaseno!' | sudo -S -k usermod -aG cybercraze www-data");
             }
 
             return 0;
