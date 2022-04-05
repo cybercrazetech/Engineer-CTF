@@ -21,14 +21,17 @@ Passwords:
 | cybercraze | nocrackpleaseno! |
 | root(mysql) | youshallnotcrackthis |
 | admin(engineer-portal admin) | youshallnotcrackthis |
-| ralph(engineer-portal user) | ralph |
-| tom(engineer-portal user) | tom |
-| jez(engineer-portal user) | jez |
-| andres(engineer-portal user) | andres |
+| ralph(engineer-portal user) | ralphthelegend |
+| tom(engineer-portal user) | tomandjerry |
+| jez(engineer-portal user) | jezmusic |
+| andres(engineer-portal user) | andresrevolutionary |
 
 ### Other
 
 1. The online engineer portal is built using the original source code version 1.0. There's no deliberate manipulation of the source code to allow the further exploit done.
+2. refer to:
+https://www.exploit-db.com/exploits/50452
+
 
 ## Writeup
 
