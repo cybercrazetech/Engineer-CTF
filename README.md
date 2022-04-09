@@ -20,6 +20,7 @@ Passwords:
 | root | nocrackpleaseno! |
 | cybercraze | nocrackpleaseno! |
 | root(mysql) | youshallnotcrackthis |
+| www-data | youshallnotcrackthis |
 | admin(engineer-portal admin) | youshallnotcrackthis |
 | ralph(engineer-portal user) | ralphthelegend |
 | tom(engineer-portal user) | tomandjerry |
